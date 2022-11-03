@@ -4,7 +4,7 @@
 ```
 https://go.dev/doc/install
 ```
-<img src=https://github.com/dong-tran/goinaction/assets/install.png/>
+![Install](https://github.com/dong-tran/goinaction/blob/master/assets/install.png)
 
 ## Verify installing
 ```
@@ -19,7 +19,7 @@ go version
 ```
 https://pkg.go.dev/builtin@go1.19.2
 ```
-<img src=https://github.com/dong-tran/goinaction/assets/buildin.png/>
+![Buildin](https://github.com/dong-tran/goinaction/blob/master/assets/buildin.png)
 
 ## Standard library
 ```
