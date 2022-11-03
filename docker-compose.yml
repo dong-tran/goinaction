@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  go:
+    build: .
+    environment:
+      - POSTGRES_HOST=host.docker.internal
+    volumes:
+      - "./assets:/public"
+    ports:
+      - "5508:5508"

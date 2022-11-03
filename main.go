@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/dong-tran/goinaction/uri"
+	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
 
@@ -12,12 +13,13 @@ func startServer() {
 	log.Printf("Starting server at http://localhost:5508")
 	var controllers = uri.CreateControllers()
 	log.Printf("Found %d endpoint need to add", len(controllers))
-	mux := http.NewServeMux()
+	r := mux.NewRouter()
 	for _, ctr := range controllers {
-		mux.HandleFunc(ctr.Path(), ctr.Handle)
+		r.PathPrefix(ctr.Path()).HandlerFunc(ctr.Handle)
 		log.Printf("Added path: %s", ctr.Path())
 	}
-	handler := cors.Default().Handler(mux)
+	r.PathPrefix("/public/").Handler(http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
+	handler := cors.Default().Handler(r)
 	log.Fatal(http.ListenAndServe(":5508", handler))
 }
 
