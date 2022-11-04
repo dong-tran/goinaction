@@ -144,3 +144,16 @@ func (v Vehicle) Run() string {
 - Compiler
 
 # 7. OOP?
+## Concept
+- `Class` `Object` `Instance` ==> NO
+- `type` `value`
+
+## 1. Encapsulation
+- `package`
+- Exported/Unexported
+## 2. Inheritance
+- NO
+- `embedded`
+## 3. Polymorphism
+- `interface`
+## 4. Abstraction?
