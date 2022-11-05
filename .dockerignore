@@ -3,3 +3,4 @@ LICENSE
 Dockerfile
 docker-compose.yml
 .gitignore
+public
