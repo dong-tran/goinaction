@@ -6,6 +6,6 @@ services:
     environment:
       - POSTGRES_HOST=host.docker.internal
     volumes:
-      - "./assets:/public"
+      - "./public:/public"
     ports:
       - "5508:5508"
