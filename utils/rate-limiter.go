@@ -24,7 +24,7 @@ func NewRateLimiter(limit, initialWindow time.Duration, resetThreshold int) *Rat
 	}
 }
 
-func (r *RateLimiter) Execute(task MyFunction, param int, wg *sync.WaitGroup) {
+func (r *RateLimiter) Execute(task MyFunction, param int) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -48,35 +48,28 @@ func (r *RateLimiter) Execute(task MyFunction, param int, wg *sync.WaitGroup) {
 
 	// Execute task
 	task(param)
-	wg.Done()
 }
 
 var startTime time.Time
 
 func main() {
 	// Initialize a rate limiter with a limit of 1 call per second and 5 tasks allowed to run immediately in the first 5 seconds
-	limiter := NewRateLimiter(time.Second, 10*time.Second, 20)
+	limiter := NewRateLimiter(time.Second, 10*time.Second, 10)
 
-	var wg sync.WaitGroup
 	startTime = time.Now()
 	fmt.Printf("Task started at: %02d:%02d\n", startTime.Minute(), startTime.Second())
 
-	// Simulate 100 calls to Execute, which should be rate-limited after the initial window
-	for i := 0; i < 100; i++ {
-		wg.Add(1)
-		limiter.Execute(caller, i, &wg)
+	var caller MyFunction = func(num int) {
+		fmt.Println(fmt.Sprintf("Executing task %d ...", num))
+		startTime := time.Now()
+		fmt.Printf("Task started at: %02d:%02d\n", startTime.Minute(), startTime.Second())
+		fmt.Println(fmt.Sprintf("Task %d completed.", num))
 	}
-
-	// Wait for all tasks to complete
-	wg.Wait()
+	// Simulate 20 calls to Execute, which should be rate-limited after the initial window
+	for i := 0; i < 20; i++ {
+		limiter.Execute(caller, i)
+	}
 
 	stopTime := time.Now()
 	fmt.Printf("Task finished at: %02d:%02d\n", stopTime.Minute(), stopTime.Second())
-}
-
-func caller(num int) {
-	fmt.Println(fmt.Sprintf("Executing task %d ...", num))
-	startTime := time.Now()
-	fmt.Printf("Task started at: %02d:%02d\n", startTime.Minute(), startTime.Second())
-	fmt.Println(fmt.Sprintf("Task %d completed.", num))
 }
